@@ -12,10 +12,11 @@ angular.module('myApp.videogular1',
 		["$sce", '$scope', '$timeout', function ($sce, $scope, $timeout) {
 			console.log("Hello from HomeCtrl!");
 			this.config = {
-				sources: [
-					{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4"},
-					{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"), type: "video/webm"},
-					{src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"), type: "video/ogg"}
+				sources: [		
+					{src: $sce.trustAsResourceUrl("http://ak9.picdn.net/shutterstock/videos/3005179/preview/stock-footage-house-design-progress-architecture-drawing-and-visualization.webm"), type: "video/mp4"},					
+					// {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4"},
+					// {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"), type: "video/webm"},
+					// {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"), type: "video/ogg"}
 				],
 				tracks: [
 					{
@@ -28,13 +29,16 @@ angular.module('myApp.videogular1',
 				],
 				theme: "bower_components/videogular-themes-default/videogular.css",
 				plugins: {
-					poster: "http://www.videogular.com/assets/images/videogular.png"
+					poster: "http://il8.picdn.net/shutterstock/videos/3005179/thumb/8.jpg"
+					// poster: "http://www.videogular.com/assets/images/videogular.png"
 				}
 			};
 
 	        $scope.tasks = [];	        
 	        $scope.startedTracking = false;
 	        $scope.timer = null;
+	        $scope.endTime = 14000;
+
 	        $scope.add = function() {
 	        	if (!$scope.startedTracking) {
 	        		controller.API.play();
@@ -46,17 +50,13 @@ angular.module('myApp.videogular1',
 	            $scope.tasks.push($scope.title);
 	        }
 	        $scope.delete = function() {
-	            //controller.API.play();
-	            var timeIncrement = (controller.API.timeLeft / $scope.tasks.length) | 0;
+
+	            var timeLeft = controller.API.timeLeft - (controller.API.totalTime - $scope.endTime);
+
+	            var timeIncrement = ( timeLeft / $scope.tasks.length) | 0;
 	            var timeIncrementSeconds = parseInt(timeIncrement / 1000);
 	            var newTime = controller.API.currentTime + timeIncrement;
 	            var newTimeSeconds = parseInt(newTime / 1000);
-				// console.log("Total time ", controller.API.totalTime);
-				// console.log("Current time: ", controller.API.currentTime);
-				// console.log("Time left ", controller.API.timeLeft);
-	            // console.log("Moving to", newTime);
-
-	            //controller.API.seekTime(newTimeSeconds);
 
 	            if ($scope.timer !== null) {
 		            $timeout.cancel($scope.timer); 
